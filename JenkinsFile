@@ -10,19 +10,19 @@ pipeline{
         }
         stage("Build"){
             steps{
-               sh 'docker build . -t muhammed0saeed/my-app:v1'
+               sh 'docker build . -t muhammed0saeed/my-app:v$BUILD_NUMBER'
             }
         }
         stage("Test"){
             steps{
-               sh 'docker run muhammed0saeed/my-app:v1'
+               sh 'docker run muhammed0saeed/my-app:v$BUILD_NUMBER'
             }
         }   
         stage("Release"){
             steps{
                withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'DockerPass', usernameVariable: 'DockerUser')]) {
                sh 'echo $DockerPass| docker login -u $DockerUser --password-stdin'
-               sh 'docker push muhammed0saeed/my-app:v1'
+               sh 'docker push muhammed0saeed/my-app:v$BUILD_NUMBER'
 }
             }
         }    
