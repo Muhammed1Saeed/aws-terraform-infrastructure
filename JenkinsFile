@@ -1,0 +1,30 @@
+pipeline{
+    agent any
+    stages{
+        stage("checkout Code"){
+            steps{
+                echo 'Getting code from Github'
+                git branch: 'main', credentialsId: 'Github', url: 'https://github.com/Muhammed1Saeed/aws-terraform-infrastructure.git'
+                sh 'ls -l'
+            }
+        }
+        stage("Build"){
+            steps{
+               sh 'docker build . -t muhammed0saeed/my-app:v1'
+            }
+        }
+        stage("Test"){
+            steps{
+               sh 'docker run muhammed0saeed/my-app:v1'
+            }
+        }   
+        stage("Release"){
+            steps{
+               withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'DockerPass', usernameVariable: 'DockerUser')]) {
+               sh 'echo $DockerPass| docker login -u $DockerUser --password-stdin'
+               sh 'docker push muhammed0saeed/my-app:v1'
+}
+            }
+        }    
+    }
+}
