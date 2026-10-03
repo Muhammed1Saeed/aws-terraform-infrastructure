@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v7
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-app:$(date +%s)
+      run: docker build . --file Dockerfile --tag muhammed0saeed/new-app:$(date +%s)
 
   Test:
   
@@ -41,5 +41,9 @@ jobs:
   
      steps:
       - uses: actions/checkout@v7
+      - uses: docker/login-action@v4.6.0
+        with:
+          username: ${{  secrets.DOCKERUSER  }}
+          password: ${{  secrets.DOCKERPASSWORD  }}
       - name: Release the Docker image
-        run: echo "release========="
+        run: docker push -t muhammed0saeed/new-appp:$(date +%s) .
