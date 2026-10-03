@@ -42,4 +42,4 @@ jobs:
      steps:
       - uses: actions/checkout@v7
       - name: Release the Docker image
-        run: echo"release========="
+        run: echo "release========="
